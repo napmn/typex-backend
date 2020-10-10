@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import copy
 import environ
 from pathlib import Path
 
@@ -36,6 +37,11 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'users.User'
 
+PROJECT_APPS = [
+    'users',
+    'quotes'
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,10 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'users',
-    'quotes'
-]
+] + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,6 +116,31 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Logging
+PROJECT_APP_LOGGER_CONF = {
+    'handlers': ['console'],
+    'level': 'DEBUG'
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s.%(msecs)03dZ %(levelname)s %(name)s %(message)s',
+            'datefmt': '%Y-%m-%dT%H:%M:%S',
+        },
+    },
+    'loggers': {project_app: PROJECT_APP_LOGGER_CONF for project_app in PROJECT_APPS}
+}
 
 
 # Internationalization

@@ -9,4 +9,4 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
-    list_display = ('author', 'quote_type')
+    list_display = ('perex', 'author', 'quote_type')
